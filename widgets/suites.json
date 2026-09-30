@@ -1,0 +1,1 @@
+{"total":2,"items":[{"uid":"3ec3c2d3476534f58219a6224615bf3a","name":"Known Bugs Suite","statistic":{"failed":8,"broken":0,"skipped":0,"passed":0,"unknown":0,"total":8}},{"uid":"7401a688339d5b358289996f300eed3e","name":"Regression Suite","statistic":{"failed":0,"broken":0,"skipped":0,"passed":28,"unknown":0,"total":28}}]}
