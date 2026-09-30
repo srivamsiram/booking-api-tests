@@ -1,68 +1,64 @@
 package com.booking.tests;
 
-import com.booking.config.ConfigManager;
-import com.booking.models.AuthRequest;
-import com.booking.models.AuthResponse;
+import com.booking.clients.AuthClient;
+import com.booking.clients.BookingClient;
 import com.booking.models.Booking;
-import com.booking.models.BookingDates;
 import com.booking.models.CreateBookingResponse;
-import io.restassured.http.ContentType;
+import com.booking.utils.BookingBuilder;
+import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
-
 /**
- * Temporary Phase 2 checks. Replaced by real clients + tests in Phase 3/4.
+ * Temporary Phase 3 check: proves every client method works end to end.
+ * Replaced by real test classes in Phase 4.
  */
 public class SetupVerificationTest {
 
+    private final BookingClient bookingClient = new BookingClient();
+    private final AuthClient authClient = new AuthClient();
+
     @Test
     public void apiShouldBeReachable() {
-        given()
-                .baseUri(ConfigManager.getBaseUrl())
-                .when()
-                .get("/ping")
-                .then()
-                .statusCode(201);
+        bookingClient.ping().then().statusCode(201);
     }
 
     @Test
-    public void authRequestShouldReturnToken() {
-        AuthRequest request = new AuthRequest(ConfigManager.getUsername(), ConfigManager.getPassword());
-
-        AuthResponse response = given()
-                .baseUri(ConfigManager.getBaseUrl())
-                .contentType(ContentType.JSON)
-                .body(request)                       // POJO -> JSON (Jackson)
-                .when()
-                .post("/auth")
-                .then()
-                .statusCode(200)
-                .extract()
-                .as(AuthResponse.class);             // JSON -> POJO (Jackson)
-
-        Assert.assertNotNull(response.getToken(), "Expected a token but got: " + response);
+    public void authClientShouldReturnToken() {
+        String token = authClient.getValidToken();
+        Assert.assertFalse(token.isBlank(), "Token should not be blank");
     }
 
     @Test
-    public void createdBookingShouldMatchRequest() {
-        Booking expected = new Booking("Jim", "Brown", 111, true,
-                new BookingDates("2026-01-01", "2026-01-05"), "Breakfast");
+    public void fullLifecycleShouldWorkThroughClients() {
+        String token = authClient.getValidToken();
 
-        CreateBookingResponse response = given()
-                .baseUri(ConfigManager.getBaseUrl())
-                .contentType(ContentType.JSON)
-                .accept("application/json")          // exact value; ContentType.JSON sends 4 types -> 418
-                .body(expected)
-                .when()
-                .post("/booking")
-                .then()
-                .statusCode(200)
-                .extract()
-                .as(CreateBookingResponse.class);
+        // Create
+        Booking newBooking = BookingBuilder.aValidBooking().build();
+        Response createResponse = bookingClient.createBooking(newBooking);
+        Assert.assertEquals(createResponse.statusCode(), 200);
+        int bookingId = createResponse.as(CreateBookingResponse.class).getBookingid();
 
-        Assert.assertNotNull(response.getBookingid(), "Booking ID should be generated");
-        Assert.assertEquals(response.getBooking(), expected);   // uses equals()
+        // Get
+        Response getResponse = bookingClient.getBooking(bookingId);
+        Assert.assertEquals(getResponse.statusCode(), 200);
+        Assert.assertEquals(getResponse.as(Booking.class), newBooking);
+
+        // Update (PUT)
+        Booking updated = BookingBuilder.aValidBooking().withTotalprice(999).build();
+        Response updateResponse = bookingClient.updateBooking(bookingId, updated, token);
+        Assert.assertEquals(updateResponse.statusCode(), 200);
+        Assert.assertEquals(updateResponse.as(Booking.class), updated);
+
+        // Partial update (PATCH) - only firstname is sent
+        Booking partial = new Booking();
+        partial.setFirstname("Patched");
+        Response patchResponse = bookingClient.partialUpdateBooking(bookingId, partial, token);
+        Assert.assertEquals(patchResponse.statusCode(), 200);
+        Assert.assertEquals(patchResponse.as(Booking.class).getFirstname(), "Patched");
+
+        // Delete, then confirm it is gone
+        Assert.assertEquals(bookingClient.deleteBooking(bookingId, token).statusCode(), 201);
+        Assert.assertEquals(bookingClient.getBooking(bookingId).statusCode(), 404);
     }
 }
