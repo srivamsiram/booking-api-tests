@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Known API bugs (expected failures)",
+    "matchedStatuses": ["failed"],
+    "traceRegex": ".*(invalidPasswordShouldReturn401|invalidPayloadShouldReturn400).*"
+  },
+  {
+    "name": "Regression failures (investigate!)",
+    "matchedStatuses": ["failed"],
+    "traceRegex": "^(?!.*(invalidPasswordShouldReturn401|invalidPayloadShouldReturn400)).*"
+  },
+  {
+    "name": "Broken tests (setup or environment errors)",
+    "matchedStatuses": ["broken"]
+  }
+]
