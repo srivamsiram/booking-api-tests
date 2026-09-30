@@ -1,11 +1,11 @@
 # booking-api-tests
 
-[![API Tests](https://github.com/ivamsiponnada-max/booking-api-tests/actions/workflows/api-tests.yml/badge.svg)](https://github.com/ivamsiponnada-max/booking-api-tests/actions/workflows/api-tests.yml)
-[![Allure Report](https://img.shields.io/badge/Allure-live%20report-orange)](https://ivamsiponnada-max.github.io/booking-api-tests/)
+[![API Tests](https://github.com/srivamsiram/booking-api-tests/actions/workflows/api-tests.yml/badge.svg)](https://github.com/srivamsiram/booking-api-tests/actions/workflows/api-tests.yml)
+[![Allure Report](https://img.shields.io/badge/Allure-live%20report-orange)](https://srivamsiram.github.io/booking-api-tests/)
 
 An API test automation framework for the [Restful-Booker](https://restful-booker.herokuapp.com/apidoc/index.html) API, built with Java, REST Assured and TestNG. The tests run on every push to GitHub, and a live Allure report is published to GitHub Pages.
 
-📊 **Live report:** https://ivamsiponnada-max.github.io/booking-api-tests/
+📊 **Live report:** https://srivamsiram.github.io/booking-api-tests/
 
 ---
 
@@ -60,7 +60,7 @@ src/test/resources/
 **Prerequisites:** JDK 17+ and Maven 3.9+
 
 ```bash
-git clone https://github.com/ivamsiponnada-max/booking-api-tests.git
+git clone https://github.com/srivamsiram/booking-api-tests.git
 cd booking-api-tests
 ```
 
