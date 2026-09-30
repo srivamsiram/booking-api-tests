@@ -1,7 +1,7 @@
 package com.booking.clients;
 
 import com.booking.config.ConfigManager;
-import io.qameta.allure.restassured.AllureRestAssured;
+import com.booking.filters.ApiLoggingFilter;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
@@ -18,7 +18,7 @@ public abstract class BaseClient {
             .setBaseUri(ConfigManager.getBaseUrl())
             .setContentType(ContentType.JSON)
             .setAccept("application/json")        // exact value; ContentType.JSON causes 418 on this API
-            .addFilter(new AllureRestAssured())   // attaches request/response to Allure (customised in Phase 5)
+            .addFilter(new ApiLoggingFilter())    // Allure attachments + console summary
             .build();
 
     /** Starts a new request that already has the base URL, headers and filters applied. */

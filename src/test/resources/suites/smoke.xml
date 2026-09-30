@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- 5 fast, critical-path tests. Run: mvn test -Psmoke -->
+<suite name="Smoke Suite" verbose="1">
+    <test name="Smoke Tests">
+        <groups>
+            <run>
+                <include name="smoke"/>
+                <exclude name="known-bug"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.booking.tests"/>
+        </packages>
+    </test>
+</suite>

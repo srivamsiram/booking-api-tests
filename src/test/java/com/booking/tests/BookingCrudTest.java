@@ -3,6 +3,11 @@ package com.booking.tests;
 import com.booking.models.Booking;
 import com.booking.models.CreateBookingResponse;
 import com.booking.utils.BookingBuilder;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
@@ -14,9 +19,13 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
+@Epic("Restful-Booker API")
+@Feature("Bookings")
+@Story("CRUD lifecycle")
 @Test(groups = "regression")
 public class BookingCrudTest extends BaseTest {
 
+    @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke", description = "Create a booking and receive a new booking ID")
     public void createBookingShouldReturnNewId() {
         Booking booking = BookingBuilder.aValidBooking().build();
@@ -29,6 +38,7 @@ public class BookingCrudTest extends BaseTest {
         assertEquals(body.getBooking(), booking, "Response should echo the created booking");
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke", description = "Get an existing booking by ID")
     public void getBookingByIdShouldReturnBooking() {
         Booking booking = BookingBuilder.aValidBooking().build();
@@ -63,6 +73,7 @@ public class BookingCrudTest extends BaseTest {
         assertTrue(ids.contains(bookingId), "Filtered IDs " + ids + " should contain " + bookingId);
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke", description = "Fully update a booking with PUT")
     public void updateBookingShouldReplaceAllFields() {
         int bookingId = createBookingAndGetId(BookingBuilder.aValidBooking().build());
@@ -98,6 +109,7 @@ public class BookingCrudTest extends BaseTest {
         assertEquals(result.getBookingdates(), original.getBookingdates(), "Unpatched field must not change");
     }
 
+    @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke", description = "Delete a booking; it can no longer be fetched")
     public void deleteBookingShouldRemoveIt() {
         int bookingId = createBookingAndGetId(BookingBuilder.aValidBooking().build());

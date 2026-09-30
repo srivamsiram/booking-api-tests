@@ -3,6 +3,9 @@ package com.booking.tests;
 import com.booking.models.Booking;
 import com.booking.models.CreateBookingResponse;
 import com.booking.utils.BookingBuilder;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -12,6 +15,9 @@ import java.time.LocalDate;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
+@Epic("Restful-Booker API")
+@Feature("Bookings")
+@Story("Boundary values (data-driven)")
 @Test(groups = "regression")
 public class BookingDataDrivenTest extends BaseTest {
 
@@ -28,7 +34,7 @@ public class BookingDataDrivenTest extends BaseTest {
                 {"single-character names",
                         BookingBuilder.aValidBooking().withFirstname("A").withLastname("B").build()},
                 {"accented unicode names",
-                        BookingBuilder.aValidBooking().withFirstname("José").withLastname("Müller").build()},
+                        BookingBuilder.aValidBooking().withFirstname("JosÃ©").withLastname("MÃ¼ller").build()},
                 {"deposit not paid",
                         BookingBuilder.aValidBooking().withDepositpaid(false).build()},
                 {"no additional needs",

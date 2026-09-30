@@ -5,6 +5,12 @@ import com.booking.models.AuthRequest;
 import com.booking.models.AuthResponse;
 import com.booking.models.Booking;
 import com.booking.utils.BookingBuilder;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
@@ -13,11 +19,15 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 
+@Epic("Restful-Booker API")
+@Feature("Authentication")
+@Story("Token-protected endpoints")
 @Test(groups = "regression")
 public class AuthTest extends BaseTest {
 
     private static final String INVALID_TOKEN = "invalid-token-123";
 
+    @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke", description = "Valid credentials return an auth token")
     public void validCredentialsShouldReturnToken() {
         AuthRequest credentials = new AuthRequest(ConfigManager.getUsername(), ConfigManager.getPassword());
@@ -40,6 +50,7 @@ public class AuthTest extends BaseTest {
         assertEquals(body.getReason(), "Bad credentials");
     }
 
+    @Issue("BUG-1")
     @Test(groups = "known-bug", description = "BUG: wrong password should return 401, API returns 200")
     public void invalidPasswordShouldReturn401() {
         AuthRequest credentials = new AuthRequest(ConfigManager.getUsername(), "wrong-password");

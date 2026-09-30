@@ -1,6 +1,10 @@
 package com.booking.tests;
 
 import com.booking.utils.BookingBuilder;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -11,6 +15,9 @@ import java.util.Map;
 
 import static org.testng.Assert.assertEquals;
 
+@Epic("Restful-Booker API")
+@Feature("Bookings")
+@Story("Negative and input validation")
 @Test(groups = "regression")
 public class NegativeBookingTest extends BaseTest {
 
@@ -77,6 +84,12 @@ public class NegativeBookingTest extends BaseTest {
         };
     }
 
+    @Issue("BUG-4")
+    @Issue("BUG-5")
+    @Issue("BUG-6")
+    @Issue("BUG-7")
+    @Issue("BUG-8")
+    @Issue("BUG-9")
     @Test(dataProvider = "invalidPayloads", groups = "known-bug",
             description = "BUG: invalid booking payloads should be rejected with 400")
     public void invalidPayloadShouldReturn400(String scenario, Map<String, Object> payload) {
