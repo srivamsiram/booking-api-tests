@@ -1,0 +1,19 @@
+# Build output
+target/
+
+# Allure
+allure-results/
+allure-report/
+.allure/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local secrets override (we'll use this in Phase 2)
+config.local.properties
